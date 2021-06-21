@@ -26,7 +26,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText usernameText, passwordText, emailText, confirmPasswordText;
     private FirebaseAuth mAuth;
     private String TAG = "SignUpPage";
-    private FirebaseFirestore db;
+    //private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
         passwordText = (EditText) findViewById(R.id.password);
         emailText = (EditText) findViewById(R.id.email);
         confirmPasswordText = (EditText) findViewById(R.id.confirm_password);
-        db = FirebaseFirestore.getInstance();
+        //db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
     }
@@ -49,6 +49,9 @@ public class SignUpActivity extends AppCompatActivity {
         email = emailText.getText().toString();
 
         if (validate_input(username, password, confirmPassword, email)){
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Creating user...");
+            progressDialog.show();
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -62,9 +65,13 @@ public class SignUpActivity extends AppCompatActivity {
                                         mAuth.getCurrentUser().getUid()
                                 );
 
+                                progressDialog.dismiss();
+                                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                startActivity(intent);
+
 
                                 // Direct to login page
-                                saveCreatorToFirebase(creator);
+                                //saveCreatorToFirebase(creator);
                                 Log.d(TAG, "createUserWithEmail:success");
 
                             } else {
@@ -79,7 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-
+/*
     private void saveCreatorToFirebase(Creator user){
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Creating user...");
@@ -107,7 +114,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-
+ */
 
 
 
