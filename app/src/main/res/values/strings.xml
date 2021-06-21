@@ -10,6 +10,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_logout">Logout</string>
 
     <!--Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -21,7 +22,7 @@
     <string name="title_activity_creator_landing_page">CreatorLandingPage</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="default_web_client_id">270464788381-lffd9gjl88ejl6pc0nmka4jvfesg5bdb.apps.googleusercontent.com</string>
+    <!--string name="default_web_client_id">270464788381-lffd9gjl88ejl6pc0nmka4jvfesg5bdb.apps.googleusercontent.com</string-->
 
 
 </resources>
