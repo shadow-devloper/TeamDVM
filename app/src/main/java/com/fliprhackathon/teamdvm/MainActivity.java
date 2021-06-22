@@ -1,14 +1,24 @@
 package com.fliprhackathon.teamdvm;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.fliprhackathon.teamdvm.ui.gallery.GalleryFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,8 +35,10 @@ import com.fliprhackathon.teamdvm.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.jetbrains.annotations.NotNull;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+public class MainActivity extends AppCompatActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -34,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseUser currentUser;
     private NavigationView navigationView;
     private static final String TAG ="MAIN ACTIVITY";
+    boolean doubleBackToExitPressedOnce=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        //navigationView.setNavigationItemSelectedListener(this);
         setSupportActionBar(binding.appBarMain.toolbar);
 
         DrawerLayout drawer = binding.drawerLayout;
@@ -53,13 +66,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_logout)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId()==R.id.nav_logout) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Log Out")
+                        .setMessage("Are you sure you want to logout")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                                        build();
+                                GoogleSignInClient googleSignInClient= GoogleSignIn.getClient(MainActivity.this,gso);
+                                googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            mAuth.signOut();
+                                            Log.d(TAG, "SIGN OUT successful");
+                                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                            startActivity(intent);
+
+                                        }
+                                    }
+                                });
+
+
+
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+            }
+            return true;
+        });
+        //navigationView.setNavigationItemSelectedListener(this);
         updateNavHeader();
     }
 
@@ -69,7 +118,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(doubleBackToExitPressedOnce) {
+                finishAffinity();
+            }
+            this.doubleBackToExitPressedOnce=true;
+            Toast.makeText(this,"Please click back again to exit",Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            },2000);
+
         }
     }
 
@@ -98,19 +158,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navUserMail.setText(currentUser.getEmail());
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+   /* @Override
+    public boolean onNavigationItemSelected() {
 
         Log.d(TAG,"SIGN OUT CALLED");
 
         int id = item.getItemId();
         if(id==R.id.nav_logout){
-            mAuth.signOut();
-            Log.d(TAG,"SIGN OUT successful");
+            new AlertDialog.Builder(this)
+                    .setTitle("Log Out")
+                    .setMessage("Are you sure you want to logout")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface,int i) {
+                            mAuth.signOut();
+                            Log.d(TAG,"SIGN OUT successful");
+                            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("No",null)
+                    .show();
+
+
 
         }
         return false;
     }
+
+    */
 
 
 }

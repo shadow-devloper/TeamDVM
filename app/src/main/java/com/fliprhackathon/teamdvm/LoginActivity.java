@@ -2,6 +2,7 @@ package com.fliprhackathon.teamdvm;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -180,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
+
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -198,5 +200,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public void onBackPressed() {
+        finish();
+    }
+
 
 }
