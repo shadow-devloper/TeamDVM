@@ -159,5 +159,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         binding.drawerLayout.closeDrawers();
         return true;
     }
+
 }
 
