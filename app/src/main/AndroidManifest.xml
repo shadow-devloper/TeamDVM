@@ -13,6 +13,7 @@
             android:name=".LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.TeamDVM.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.TeamDVM.NoActionBar"/>
     </application>
 
 </manifest>

@@ -2,12 +2,17 @@ package com.fliprhackathon.teamdvm;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -24,12 +29,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public class LoginActivity extends AppCompatActivity {
@@ -202,8 +211,48 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        finish();
+        finishAffinity();
+    }
+
+    public void resetPassword(View v){
+        EditText resetMail = new EditText(v.getContext());
+        new AlertDialog.Builder(this)
+                .setTitle("Reset Password")
+                .setMessage("Enter your mail to receive Reset link")
+                .setView(resetMail)
+                .setPositiveButton("Recover", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String mail = resetMail.getText().toString();
+                        ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+                        progressDialog.setTitle("Sending....");
+                        progressDialog.show();
+                        mAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                progressDialog.dismiss();
+                                Toast.makeText(LoginActivity.this,"Reset Link sent to your email",Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull @NotNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(LoginActivity.this,"Error! Reset Link is not sent"+e.getMessage(),Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        });
+
+
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
 
 }
+
+

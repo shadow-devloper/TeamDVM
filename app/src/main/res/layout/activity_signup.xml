@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
 
+    <TextView
+        android:id="@+id/signUpView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        android:gravity="center"
+        android:text="Sign Up"
+        android:textSize="40dp"/>
+
     <EditText
         android:id="@+id/username"
         android:layout_width="0dp"
@@ -14,7 +25,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="18dp"
-        android:background="@drawable/round_border"
+        android:background="@drawable/round_button"
         android:drawableRight="@drawable/ic_person"
         android:hint="Username"
         android:inputType="textEmailAddress"
@@ -25,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpView" />
 
     <EditText
         android:id="@+id/email"
@@ -34,7 +45,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/round_border"
+        android:background="@drawable/round_button"
         android:drawableRight="@drawable/ic_email"
         android:hint="@string/prompt_email"
         android:textColorHint="@color/black"
@@ -53,7 +64,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:textColorHint="@color/black"
-        android:background="@drawable/round_border"
+        android:background="@drawable/round_button"
         android:drawableRight="@drawable/ic_lock"
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_sign_in_short"
@@ -73,7 +84,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/round_border"
+        android:background="@drawable/round_button"
         android:drawableRight="@drawable/ic_lock"
         android:hint="@string/prompt_confirm_password"
         android:textColorHint="@color/black"
@@ -103,7 +114,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login"
         android:layout_width="match_parent"
 
@@ -113,6 +124,8 @@
         android:layout_marginEnd="32dp"
 
         android:onClick="registerOnClick"
+        android:background="@drawable/round_border"
+        android:backgroundTint="@color/tap_indicator_gray"
         android:text="@string/action_register"
         android:textColor="#5025FC"
         android:gravity="center"
@@ -122,6 +135,25 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirm_password" />
+
+    <TextView
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/white"
+        android:text="Have an Account? Sign In"
+        android:onClick="returnToLogin"
+        android:textColor="#1D0E5B"
+
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
