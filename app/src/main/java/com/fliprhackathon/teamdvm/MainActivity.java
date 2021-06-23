@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private FirebaseUser currentUser;
     private NavigationView navigationView;
     private static final String TAG ="MAIN ACTIVITY";
-    private FragmentManager fragmentManager;
     boolean doubleBackToExitPressedOnce=false;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         Log.i(TAG, "onCreate : " + binding.getRoot());
         setContentView(binding.getRoot());
-        fragmentManager = getSupportFragmentManager();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
@@ -154,21 +153,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         })
                         .setNegativeButton("No", null)
                         .show();
-            } else if(item.getItemId()==R.id.nav_home) {
-            fragmentManager.beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(binding.container.getId(), HomeFragment.class, null)
-                    .commitNow();
-        } else if(item.getItemId()==R.id.nav_gallery) {
-            fragmentManager.beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(binding.container.getId(), GalleryFragment.class, null)
-                    .commitNow();
-        } else if(item.getItemId()==R.id.nav_slideshow) {
-            fragmentManager.beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(binding.container.getId(), SlideshowFragment.class, null)
-                    .commitNow();
+            } else {
+            navController.navigate(item.getItemId());
         }
         binding.drawerLayout.closeDrawers();
         return true;
