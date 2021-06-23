@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     .replace(binding.container.getId(), SlideshowFragment.class, null)
                     .commitNow();
         }
-
+        binding.drawerLayout.closeDrawers();
         return true;
     }
 }
