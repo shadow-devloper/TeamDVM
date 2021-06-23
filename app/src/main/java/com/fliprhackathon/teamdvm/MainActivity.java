@@ -156,17 +156,21 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         .show();
             } else if(item.getItemId()==R.id.nav_home) {
             fragmentManager.beginTransaction()
-                    .replace(binding.container.getId(), new HomeFragment())
+                    .setReorderingAllowed(true)
+                    .replace(binding.container.getId(), HomeFragment.class, null)
                     .commitNow();
         } else if(item.getItemId()==R.id.nav_gallery) {
             fragmentManager.beginTransaction()
-                    .replace(binding.container.getId(), new GalleryFragment())
+                    .setReorderingAllowed(true)
+                    .replace(binding.container.getId(), GalleryFragment.class, null)
                     .commitNow();
         } else if(item.getItemId()==R.id.nav_slideshow) {
             fragmentManager.beginTransaction()
-                    .replace(binding.container.getId(), new SlideshowFragment())
+                    .setReorderingAllowed(true)
+                    .replace(binding.container.getId(), SlideshowFragment.class, null)
                     .commitNow();
         }
+
         return true;
     }
 }
